@@ -1,19 +1,21 @@
 var express = require('express');
+var expressLayouts = require('express-ejs-layouts');
+var path = require('path');
 var app = express();
 
+app.set('port', 8081);
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'ejs');
+app.set('layout', 'layout');
+
+app.use(expressLayouts);
+app.use(express.static(path.join(__dirname, 'public')));
+app.listen(app.get('port'), function () {
+    console.log('App listening on port:' + app.get('port'));
+});
+
 app.get('/', function (req, res) {
-    res.send('Template!');
+    res.render('home', { title: 'Home' });
 });
 
-app.listen(8081, function () {
-    console.log('Example app listening on port 8081!');
-});
-
-// var http = require('http');
-// http.createServer(function (req, res) {
-//     res.writeHead(200, {'Content-Type': 'text/plain'});
-//     res.end('Hello World\n');
-// }).listen(8080, 'APP_PRIVATE_IP_ADDRESS');
-// console.log('Server running at http://APP_PRIVATE_IP_ADDRESS:8080/');
-
-// test
+module.exports = app;
