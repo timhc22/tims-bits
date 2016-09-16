@@ -1,10 +1,11 @@
 {
   "name": "tims-bits",
   "dependencies": {
-    "angular": "~1.4.3",
-    "jquery": "~2.1.4"
+    "jquery": "~3.1.0",
+    "angular": "~1.5.8",
+    "lodash": "~4.15.0"
   },
   "resolutions": {
-    "angular": "1.4.3"
+    "angular": "~1.5.8"
   }
 }
