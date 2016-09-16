@@ -7,4 +7,4 @@ cd /home/mylinuxusername/tims-bits/app
 
 npm install
 
-pm2 restart 0
+pm2 restart all
