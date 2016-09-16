@@ -1,14 +1,16 @@
 {
-  "name": "mean-boilerplate",
+  "name": "",
   "version": "1.0.0",
-  "description": "Mean app boilerplate",
+  "description": "",
   "main": "app.js",
   "scripts": {
+    "start": "node app.js",
+    "postinstall": "bower install",
     "test": "test"
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@bitbucket.org/timhc22/mean-boilerplate.git"
+    "url": ""
   },
   "keywords": [
     "mean",
@@ -19,9 +21,13 @@
     "express"
   ],
   "author": "Timothy Coleman",
-  "license": "ISC",
-  "homepage": "https://bitbucket.org/timhc22/mean-boilerplate#readme",
+  "license": "",
+  "homepage": "",
   "dependencies": {
-    "express": "^4.14.0"
+    "express": "^4.14.0",
+    "lodash": "^3.8.0"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.0"
   }
 }
