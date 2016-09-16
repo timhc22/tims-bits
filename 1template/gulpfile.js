@@ -1,18 +1,46 @@
 var gulp = require('gulp');
 var concat = require('gulp-concat');
+var minifyCss = require('gulp-minify-css');
+var sass = require('gulp-sass');
 var sourcemaps = require('gulp-sourcemaps');
 var uglify = require('gulp-uglify');
 
 var prodEnv = 'production';
 var baseDir = 'public/';
+var sassFile = baseDir + 'sass/app.scss';
 var bowerDir = baseDir + 'bower_components/';
+var cssBuildDir = baseDir + 'build/css/';
 var jsBuildDir = baseDir + 'build/js/';
+var cssLibBuildFile = 'lib.css';
 var jsLibBuildFile = 'lib.js';
 var jsAppBuildFile = 'app.js';
 
 gulp.task('default', ['build']);
-gulp.task('build', ['js']);
+gulp.task('build', ['styles', 'js']);
+gulp.task('styles', ['styles-lib', 'styles-app']);
 gulp.task('js', ['js-lib', 'js-app']);
+
+/**
+ * Build library styles
+ */
+gulp.task('styles-lib', function () {
+    var files = [
+        bowerDir + 'font-awesome/css/font-awesome.css'
+    ];
+    return gulp.src(files, { 'base': bowerDir })
+        .pipe(concat(cssLibBuildFile))
+        .pipe(minifyCss())
+        .pipe(gulp.dest(cssBuildDir));
+});
+
+/**
+ * Build app styles
+ */
+gulp.task('styles-app', function () {
+    return gulp.src(sassFile)
+        .pipe(sass({outputStyle: 'compressed'}))
+        .pipe(gulp.dest(cssBuildDir));
+});
 
 /**
  * Build the libraries
