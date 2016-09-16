@@ -1,0 +1,27 @@
+{
+  "name": "mean-boilerplate",
+  "version": "1.0.0",
+  "description": "Mean app boilerplate",
+  "main": "app.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@bitbucket.org/timhc22/mean-boilerplate.git"
+  },
+  "keywords": [
+    "mean",
+    "angularjs",
+    "angular",
+    "node",
+    "nodejs",
+    "express"
+  ],
+  "author": "Timothy Coleman",
+  "license": "ISC",
+  "homepage": "https://bitbucket.org/timhc22/mean-boilerplate#readme",
+  "dependencies": {
+    "express": "^4.14.0"
+  }
+}
