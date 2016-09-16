@@ -6,5 +6,6 @@ git --work-tree=/home/mylinuxusername/tims-bits
 cd /home/mylinuxusername/tims-bits/app
 
 npm install
+gulp build
 
 pm2 restart all
