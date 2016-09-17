@@ -12,6 +12,7 @@ var bowerDir = baseDir + 'bower_components/';
 var cssBuildDir = baseDir + 'build/css/';
 var jsBuildDir = baseDir + 'build/js/';
 var cssLibBuildFile = 'lib.css';
+var cssAppBuildFile = 'app.css';
 var jsLibBuildFile = 'lib.js';
 var jsAppBuildFile = 'app.js';
 
@@ -40,11 +41,11 @@ gulp.task('styles-lib', function () {
  */
 gulp.task('styles-app', function () {
     var files = [
-        bowerDir + 'Skeleton-Sass/scss/skeleton.scss', // this includes a normalize file so don't need normalize-css
-        sassFile // all user styles
+        sassFile // all user styles and skelton grid system (which includes normalise)
     ];
     return gulp.src(files)
         .pipe(sass({outputStyle: 'compressed'}))
+        .pipe(concat(cssAppBuildFile))
         .pipe(gulp.dest(cssBuildDir));
 });
 

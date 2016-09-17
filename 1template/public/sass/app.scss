@@ -1,5 +1,9 @@
 // variables
 $pink: #e71d72;
+$primary-color: $pink; // override skeleton's variables
+
+// Import skeleton gridsystem
+@import '../bower_components/Skeleton-Sass/scss/skeleton';
 
 .example-text {
     color: $pink;
