@@ -5,6 +5,7 @@ var sass = require('gulp-sass');
 var sourcemaps = require('gulp-sourcemaps');
 var uglify = require('gulp-uglify');
 var nodemon = require('gulp-nodemon');
+var browserSync = require('browser-sync').create();
 
 var prodEnv = 'production';
 var nodeIndex = 'app.js';
@@ -21,8 +22,20 @@ var jsAppBuildFile = 'app.js';
 gulp.task('default', ['build']);
 gulp.task('build', ['styles', 'js']);
 
-// todo add browser reload
-gulp.task('run-dev', ['watch-node', 'watch-js', 'watch-sass']);
+gulp.task('run-dev', ['watch-node', 'watch-templates', 'watch-js', 'watch-sass'], function () {
+    // can this be run on the same port as the website?
+    browserSync.init({
+        proxy: "localhost:8081" // todo abstractme
+    });
+    // browserSync.init({
+    //     server: "./app",
+        // port: 8081
+        // localOnly: true
+        // socket: {
+        //     domain: 'localhost:8081'
+        // }
+    // });
+});
 
 gulp.task('styles', ['styles-lib', 'styles-app']);
 gulp.task('js', ['js-lib', 'js-app']);
@@ -49,10 +62,18 @@ gulp.task('styles-app', function () {
     var files = [
         sassFile // all user styles and skelton grid system (which includes normalise)
     ];
-    return gulp.src(files)
-        .pipe(sass({outputStyle: 'compressed'}))
-        .pipe(concat(cssAppBuildFile))
-        .pipe(gulp.dest(cssBuildDir));
+    if (process.env.NODE_ENV === prodEnv) {
+        return gulp.src(files)
+            .pipe(sass({outputStyle: 'compressed'}))
+            .pipe(concat(cssAppBuildFile))
+            .pipe(gulp.dest(cssBuildDir));
+    } else {
+        return gulp.src(files)
+            .pipe(browserSync.stream())
+            .pipe(sass({outputStyle: 'compressed'}))
+            .pipe(concat(cssAppBuildFile))
+            .pipe(gulp.dest(cssBuildDir));
+    }
 });
 
 /**
@@ -104,6 +125,7 @@ gulp.task('js-app', function () {
             .pipe(gulp.dest(jsBuildDir));
     } else {
         return gulp.src(files, { 'base': frontendDir })
+            .pipe(browserSync.stream())
             .pipe(sourcemaps.init())
             .pipe(uglify({ mangle: false }))
             .pipe(concat(jsAppBuildFile))
@@ -139,6 +161,20 @@ gulp.task('watch-node', function () {
 });
 
 /**
+ * Watch ejs templates
+ */
+gulp.task('watch-templates', function () {
+    var files = [
+        './views/*.ejs'
+    ];
+    return gulp.watch(files).on('change', function (event) {
+        console.log(event.type + ': ' + event.path);
+        console.log('Running ejs task');
+        browserSync.reload();
+    }); // reload when ejs changes
+});
+
+/**
  * Watch frontend javascript files
  */
 gulp.task('watch-js', function () {
@@ -148,12 +184,15 @@ gulp.task('watch-js', function () {
         '!' + frontendDir + 'build/**',
         '!' + frontendDir + 'test/**'
     ];
-    var watcher = gulp.watch(files, ['js-app']); // only run build of project files
-    watcher.on('change', function (event) {
+    // only run build of project files
+    var watcher = gulp.watch(files, ['js-app'], function (done) {
+        browserSync.reload();
+        done();
+    });
+    return watcher.on('change', function (event) {
         console.log(event.type + ': ' + event.path);
         console.log('Running js task');
     });
-    return watcher;
 });
 
 /**
@@ -165,10 +204,13 @@ gulp.task('watch-sass', function () {
         '!' + frontendDir + 'build/**',
         '!' + bowerDir + '**'
     ];
-    var watcher = gulp.watch(filesToWatch, ['styles-app']); // only run build of project files
-    watcher.on('change', function (event) {
+    // only run build of project files
+    var watcher = gulp.watch(filesToWatch, ['styles-app'], function (done) {
+        browserSync.reload();
+        done();
+    });
+    return watcher.on('change', function (event) {
         console.log(event.type + ': ' + event.path);
         console.log('Running sass task');
     });
-    return watcher;
 });
