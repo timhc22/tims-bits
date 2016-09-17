@@ -25,7 +25,9 @@ gulp.task('js', ['js-lib', 'js-app']);
  */
 gulp.task('styles-lib', function () {
     var files = [
-        bowerDir + 'font-awesome/css/font-awesome.css'
+        bowerDir + 'font-awesome/css/font-awesome.css',
+        bowerDir + 'font-awesome/css/font-awesome.css',
+        bowerDir + 'normalize-css/normalize.css'
     ];
     return gulp.src(files, { 'base': bowerDir })
         .pipe(concat(cssLibBuildFile))
@@ -37,7 +39,11 @@ gulp.task('styles-lib', function () {
  * Build app styles
  */
 gulp.task('styles-app', function () {
-    return gulp.src(sassFile)
+    var files = [
+        bowerDir + 'Skeleton-Sass/scss/skeleton.scss', // this includes a normalize file so don't need normalize-css
+        sassFile // all user styles
+    ];
+    return gulp.src(files)
         .pipe(sass({outputStyle: 'compressed'}))
         .pipe(gulp.dest(cssBuildDir));
 });
