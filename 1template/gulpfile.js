@@ -4,13 +4,15 @@ var minifyCss = require('gulp-minify-css');
 var sass = require('gulp-sass');
 var sourcemaps = require('gulp-sourcemaps');
 var uglify = require('gulp-uglify');
+var nodemon = require('gulp-nodemon');
 
 var prodEnv = 'production';
-var baseDir = 'public/';
-var sassFile = baseDir + 'sass/app.scss';
-var bowerDir = baseDir + 'bower_components/';
-var cssBuildDir = baseDir + 'build/css/';
-var jsBuildDir = baseDir + 'build/js/';
+var nodeIndex = 'app.js';
+var frontendDir = 'public/';
+var sassFile = frontendDir + 'sass/app.scss';
+var bowerDir = frontendDir + 'bower_components/';
+var cssBuildDir = frontendDir + 'build/css/';
+var jsBuildDir = frontendDir + 'build/js/';
 var cssLibBuildFile = 'lib.css';
 var cssAppBuildFile = 'app.css';
 var jsLibBuildFile = 'lib.js';
@@ -18,6 +20,10 @@ var jsAppBuildFile = 'app.js';
 
 gulp.task('default', ['build']);
 gulp.task('build', ['styles', 'js']);
+
+// todo add auto restart
+gulp.task('run-dev', ['watch-node', 'watch-js', 'watch-sass']);
+
 gulp.task('styles', ['styles-lib', 'styles-app']);
 gulp.task('js', ['js-lib', 'js-app']);
 
@@ -80,28 +86,89 @@ gulp.task('js-lib', function () {
  */
 gulp.task('js-app', function () {
     var files = [
-        baseDir + 'app.js',
-        baseDir + 'controllers/*.js',
-        baseDir + 'directives/*.js',
-        baseDir + 'filters/*.js',
-        baseDir + 'models/*.js',
-        baseDir + 'modules/*/*.js',
-        baseDir + 'modules/**/*.js',
-        baseDir + 'services/*.js',
-        baseDir + 'utilities/*.js'
+        frontendDir + 'app.js',
+        frontendDir + 'controllers/*.js',
+        frontendDir + 'directives/*.js',
+        frontendDir + 'filters/*.js',
+        frontendDir + 'models/*.js',
+        frontendDir + 'modules/*/*.js',
+        frontendDir + 'modules/**/*.js',
+        frontendDir + 'services/*.js',
+        frontendDir + 'utilities/*.js'
     ];
 
     if (process.env.NODE_ENV === prodEnv) {
-        return gulp.src(files, { 'base': baseDir })
+        return gulp.src(files, { 'base': frontendDir })
             .pipe(uglify({ mangle: false }))
             .pipe(concat(jsAppBuildFile))
             .pipe(gulp.dest(jsBuildDir));
     } else {
-        return gulp.src(files, { 'base': baseDir })
+        return gulp.src(files, { 'base': frontendDir })
             .pipe(sourcemaps.init())
             .pipe(uglify({ mangle: false }))
             .pipe(concat(jsAppBuildFile))
             .pipe(sourcemaps.write('./'))
             .pipe(gulp.dest(jsBuildDir));
     }
+});
+
+/**
+ * Auto restart node
+ *
+ * IF ANY OTHER JAVASCRIPT DIRECTORIES ARE ADDED TO THE BASE, WHICH AREN'T HANDLED BY NODE, THEN ADD TO IGNORE LIST
+ */
+gulp.task('watch-node', function () {
+    var nodeArgs = [];
+    if (process.env.DEBUGGER) {
+        nodeArgs.push('--debug');
+    }
+    return nodemon({
+        script: nodeIndex,
+        ext: 'js',
+        ignore: [
+            'gulpfile.js', // don't add ./
+            'gulp/**/*', // ignore if have abstracted gulp files into separate directory
+            frontendDir + '**/*', // ignore frontend files
+            'node_modules/**/*', // ignore libraries
+            'test/**/*'
+        ],
+        nodeArgs: nodeArgs
+    }).on('restart', function (files) {
+        console.log('Change:', files);
+    });
+});
+
+/**
+ * Watch frontend javascript files
+ */
+gulp.task('watch-js', function () {
+    var files = [
+        frontendDir + '**/*.js',
+        '!' + bowerDir + '**',
+        '!' + frontendDir + 'build/**',
+        '!' + frontendDir + 'test/**'
+    ];
+    var watcher = gulp.watch(files, ['js-app']); // only run build of project files
+    watcher.on('change', function (event) {
+        console.log(event.type + ': ' + event.path);
+        console.log('Running js task');
+    });
+    return watcher;
+});
+
+/**
+ * Watch Sass
+ */
+gulp.task('watch-sass', function () {
+    var filesToWatch = [
+        frontendDir + 'sass/**/*.scss',
+        '!' + frontendDir + 'build/**',
+        '!' + bowerDir + '**'
+    ];
+    var watcher = gulp.watch(filesToWatch, ['styles-app']); // only run build of project files
+    watcher.on('change', function (event) {
+        console.log(event.type + ': ' + event.path);
+        console.log('Running sass task');
+    });
+    return watcher;
 });
