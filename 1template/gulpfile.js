@@ -19,7 +19,7 @@ var cssAppBuildFile = 'app.css';
 var jsLibBuildFile = 'lib.js';
 var jsAppBuildFile = 'app.js';
 
-gulp.task('default', ['build']);
+gulp.task('default', ['run-dev']);
 gulp.task('build', ['styles', 'js']);
 
 gulp.task('run-dev', ['watch-node', 'watch-templates', 'watch-js', 'watch-sass'], function () {
