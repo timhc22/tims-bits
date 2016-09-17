@@ -21,7 +21,7 @@ var jsAppBuildFile = 'app.js';
 gulp.task('default', ['build']);
 gulp.task('build', ['styles', 'js']);
 
-// todo add auto restart
+// todo add browser reload
 gulp.task('run-dev', ['watch-node', 'watch-js', 'watch-sass']);
 
 gulp.task('styles', ['styles-lib', 'styles-app']);
