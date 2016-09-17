@@ -23,18 +23,16 @@ gulp.task('default', ['run-dev']);
 gulp.task('build', ['styles', 'js']);
 
 gulp.task('run-dev', ['watch-node', 'watch-templates', 'watch-js', 'watch-sass'], function () {
-    // can this be run on the same port as the website?
+    // todo abstract the ports
+    // can't be run on the same port as the website
     browserSync.init({
-        proxy: "localhost:8081" // todo abstractme
+        port: 3000, // you can specify the port here
+        // can't use the same port that nodemon uses.
+        proxy: {
+            target: 'localhost:8081', // original port
+            ws: true // enables websockets // todo check if needed
+        }
     });
-    // browserSync.init({
-    //     server: "./app",
-        // port: 8081
-        // localOnly: true
-        // socket: {
-        //     domain: 'localhost:8081'
-        // }
-    // });
 });
 
 gulp.task('styles', ['styles-lib', 'styles-app']);
