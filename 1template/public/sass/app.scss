@@ -1,5 +1,6 @@
-// Import variables
-@import 'variables';
+// variables
+$pink: #e71d72;
 
-// Import 'global' structures, such as footer and layout and grid
-@import 'layout/layout';
+.example-text {
+    color: $pink;
+}
