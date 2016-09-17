@@ -2,6 +2,7 @@ var express = require('express');
 var expressLayouts = require('express-ejs-layouts');
 var path = require('path');
 var app = express();
+var api = require('./api');
 
 app.set('port', 8081); // todo abstract this out
 app.set('views', path.join(__dirname, 'views'));
@@ -10,6 +11,7 @@ app.set('layout', 'layout');
 
 app.use(expressLayouts);
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(api);
 app.listen(app.get('port'), function () {
     console.log('App listening on port:' + app.get('port'));
 });
