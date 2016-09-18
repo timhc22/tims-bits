@@ -25,16 +25,9 @@ app.run(['$window', '$location', '$rootScope', '$state', '$stateParams',
 
         $rootScope.$on('$stateChangeSuccess', function(e, toState, toParams, fromState, fromParams) {
             $rootScope.bodyClass = toState.name.replace(/\./g, '-');
-            console.log($rootScope.bodyClass);
             $rootScope.extraClass = toState.data.class;
             $rootScope.previousStateName = fromState.name;
             $rootScope.previousStateParams = fromParams;
-
-            if (toState.data && toState.data.sector) {
-                $rootScope.sector = toState.data.sector;
-            } else {
-                $rootScope.sector = null;
-            }
 
             if (toState.data && toState.data.title) {
                 $rootScope.title = toState.data.title;
@@ -42,7 +35,7 @@ app.run(['$window', '$location', '$rootScope', '$state', '$stateParams',
                 $rootScope.title = null;
             }
 
-            // Trigger pageview on ui-router $stateChangeSuccess event
+            // Trigger analytics pageview on ui-router $stateChangeSuccess event
             // $window.ga('send', 'pageview', { page: $location.url() });
         });
 
@@ -62,7 +55,9 @@ app.controller('LayoutController', ['$rootScope',
     }
 ]);
 
-
+/**
+ * Home Module
+ */
 var home = angular.module('home', []).config(['$stateProvider', function($stateProvider) {
     var templateUrl = '/views/';
     $stateProvider
@@ -80,9 +75,8 @@ var home = angular.module('home', []).config(['$stateProvider', function($stateP
                 }
             }
         });
-}]);
-
-home.controller('HomeController', ['$scope',
+}])
+.controller('HomeController', ['$scope',
     function ($scope) {
         $scope.items = [
             {
