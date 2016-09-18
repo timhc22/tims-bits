@@ -167,7 +167,8 @@ gulp.task('watch-node', function () {
  */
 gulp.task('watch-templates', function () {
     var files = [
-        './views/*.ejs'
+        './views/*.ejs',
+        './public/views/*.html'
     ];
     return gulp.watch(files).on('change', function (event) {
         console.log(event.type + ': ' + event.path);
