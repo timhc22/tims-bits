@@ -19,10 +19,10 @@ var cssAppBuildFile = 'app.css';
 var jsLibBuildFile = 'lib.js';
 var jsAppBuildFile = 'app.js';
 
-gulp.task('default', ['run-dev']);
+gulp.task('default', ['run']);
 gulp.task('build', ['styles', 'js']);
 
-gulp.task('run-dev', ['watch-node', 'watch-templates', 'watch-js', 'watch-sass'], function () {
+gulp.task('run', ['watch-node', 'watch-templates', 'watch-js', 'watch-sass'], function () {
     // todo abstract the ports
     // can't be run on the same port as the website
     browserSync.init({
