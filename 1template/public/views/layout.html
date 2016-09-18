@@ -1,0 +1,7 @@
+﻿<div class="site-container">
+	<div class="header-container">
+    	<div ui-view="nav"></div>
+	</div>
+</div>
+<div ui-view class="main-content main-content--{{::$root.sector || $root.siteArea || 'home'}}"></div>
+<div ui-view="footer"></div>

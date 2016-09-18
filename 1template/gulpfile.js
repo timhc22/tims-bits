@@ -82,7 +82,11 @@ gulp.task('js-lib', function () {
     var files = [
         bowerDir + 'jquery/dist/jquery.js',
         bowerDir + 'angular/angular.js',
-        bowerDir + 'lodash/lodash.js'
+        bowerDir + 'angular-ui-router/release/angular-ui-router.js',
+        bowerDir + 'ng-device-detector/ng-device-detector.js',
+        bowerDir + 're-tree/re-tree.js',
+        bowerDir + 'lodash/lodash.js',
+        bowerDir + 'moment/moment.js'
     ];
 
     if (process.env.NODE_ENV === prodEnv) {
