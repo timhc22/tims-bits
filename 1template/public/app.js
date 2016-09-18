@@ -77,3 +77,40 @@ app.controller('DefaultController', ['$rootScope',
         $rootScope.copyrightYear = moment().format('YYYY');
     }
 ]);
+
+
+var home = angular.module('home', []).config(['$stateProvider', function($stateProvider) {
+    var templateUrl = '/views/';
+    $stateProvider
+        .state('home', {
+            data: {
+                title: 'Home'
+            },
+            parent: 'default',
+            url: '/',
+            views: {
+                '@layout': {
+                    controller: 'HomeController',
+                    resolve: {},
+                    templateUrl: templateUrl + 'home.html'
+                }
+            }
+        });
+}]);
+
+home.controller('HomeController', ['$scope',
+    function ($scope) {
+        $scope.items = [
+            {
+                name: 'One',
+                snippet: 'here1'
+            }, {
+                name: 'Two',
+                snippet: 'here2'
+            }, {
+                name: 'Three',
+                snippet: 'here3'
+            }
+        ];
+    }
+]);
