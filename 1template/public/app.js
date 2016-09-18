@@ -5,30 +5,14 @@ app.config(['$httpProvider', '$locationProvider', '$urlMatcherFactoryProvider', 
         $httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
         $locationProvider.html5Mode(true);
         $urlMatcherFactoryProvider.strictMode(false);
-
         var templateUrl = '/views/';
-
         $stateProvider
             .state('layout', {
                 abstract: true,
-                controller: 'DefaultController',
+                controller: 'LayoutController',
                 resolve: {},
                 templateUrl: templateUrl + 'layout.html',
                 url: ''
-            })
-            .state('default', {
-                abstract: true,
-                parent: 'layout',
-                url: '',
-                views: {
-                    'nav': {
-                        // controller: 'NavController',
-                        templateUrl: templateUrl + 'nav.html'
-                    },
-                    'footer': {
-                        templateUrl: templateUrl + 'footer.html'
-                    }
-                }
             })
     }
 ]);
@@ -72,7 +56,7 @@ app.run(['$window', '$location', '$rootScope', '$state', '$stateParams',
     }
 ]);
 
-app.controller('DefaultController', ['$rootScope',
+app.controller('LayoutController', ['$rootScope',
     function ($rootScope) {
         $rootScope.copyrightYear = moment().format('YYYY');
     }
@@ -86,7 +70,7 @@ var home = angular.module('home', []).config(['$stateProvider', function($stateP
             data: {
                 title: 'Home'
             },
-            parent: 'default',
+            parent: 'layout',
             url: '/',
             views: {
                 '@layout': {
