@@ -1,4 +1,16 @@
+Ideas:
+mongoose
+database connection
+facebook login
+
+
+
+
+
 Environment variables
+
+
+
 
 Add .env to root of project (gitignored) (see docs for dotenv), 
 use .env.sample
