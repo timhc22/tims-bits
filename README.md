@@ -2,6 +2,7 @@ Environment variables
 
 Add .env to root of project (gitignored) (see docs for dotenv), 
 use .env.sample
+on server, use /etc/environment
 
 
 
