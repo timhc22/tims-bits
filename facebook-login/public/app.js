@@ -10,7 +10,11 @@ app.config(['$httpProvider', '$locationProvider', '$urlMatcherFactoryProvider', 
             .state('layout', {
                 abstract: true,
                 controller: 'LayoutController',
-                resolve: {},
+                resolve: {
+                    user: ['userService', function (userService) {
+                        return userService.get();
+                    }]
+                },
                 templateUrl: templateUrl + 'layout.html',
                 url: ''
             })
@@ -49,8 +53,9 @@ app.run(['$window', '$location', '$rootScope', '$state', '$stateParams',
     }
 ]);
 
-app.controller('LayoutController', ['$rootScope',
-    function ($rootScope) {
+app.controller('LayoutController', ['$rootScope', 'user',
+    function ($rootScope, user) {
+        $rootScope.user = user;
         $rootScope.copyrightYear = moment().format('YYYY');
     }
 ]);
