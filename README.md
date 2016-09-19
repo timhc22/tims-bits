@@ -1,3 +1,12 @@
+Environment variables
+
+Add .env to root of project (gitignored) (see docs for dotenv), 
+use .env.sample
+
+
+
+
+
 Write how to set up the server:
 post-update hook
 npm install -g gulp
