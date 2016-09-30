@@ -37,4 +37,23 @@ router.get('/api/data', function (req, res, next) {
     res.json({data: 'data'});
 });
 
+
+var Schema = mongoose.Schema,
+    ObjectId = Schema.ObjectId;
+
+var BlogPost = new Schema({
+    author    : ObjectId,
+    title     : String,
+    body      : String,
+    date      : Date
+});
+
+var BlogPostModel = mongoose.model('BlogPost', BlogPost);
+var blogPost = new BlogPostModel();
+blogPost.title = 'hello';
+blogPost.save(function (err) {
+    //
+});
+
+
 module.exports = app;
