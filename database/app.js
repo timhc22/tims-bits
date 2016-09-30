@@ -1,6 +1,7 @@
 require('dotenv').config();
 var express = require('express');
 var router = express.Router();
+var mongoose = require('mongoose');
 var expressLayouts = require('express-ejs-layouts');
 var path = require('path');
 var app = express();
@@ -13,6 +14,14 @@ app.set('layout', 'layout');
 app.use(expressLayouts);
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(router);
+
+// connect to database
+console.log('ENV:', process.env.NODE_ENV);
+if (process.env.NODE_ENV === 'testing') {
+    mongoose.connect(process.env.TEST_DATABASE_URI);
+} else {
+    mongoose.connect(process.env.DATABASE_URI);
+}
 
 app.listen(app.get('port'), function () {
     console.log('App listening on port:' + app.get('port'));

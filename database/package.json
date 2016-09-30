@@ -29,7 +29,8 @@
     "ejs": "^2.5.2",
     "express": "^4.14.0",
     "express-ejs-layouts": "^2.2.0",
-    "lodash": "^4.15.0"
+    "lodash": "^4.15.0",
+    "mongoose": "^4.6.1"
   },
   "devDependencies": {
     "browser-sync": "^2.16.0",
