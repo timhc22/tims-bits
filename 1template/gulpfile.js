@@ -19,10 +19,10 @@ var cssAppBuildFile = 'app.css';
 var jsLibBuildFile = 'lib.js';
 var jsAppBuildFile = 'app.js';
 
-gulp.task('default', ['run']);
+gulp.task('default', ['runr']);
 gulp.task('build', ['styles', 'js']);
 
-gulp.task('run', ['watch-node', 'watch-templates', 'watch-js', 'watch-sass'], function () {
+gulp.task('runr', ['build', 'watch-node', 'watch-templates', 'watch-js', 'watch-sass'], function () {
     // todo abstract the ports
     // can't be run on the same port as the website
     browserSync.init({
@@ -163,7 +163,7 @@ gulp.task('watch-node', function () {
 });
 
 /**
- * Watch ejs templates
+ * Watch templates
  */
 gulp.task('watch-templates', function () {
     var files = [
@@ -172,9 +172,9 @@ gulp.task('watch-templates', function () {
     ];
     return gulp.watch(files).on('change', function (event) {
         console.log(event.type + ': ' + event.path);
-        console.log('Running ejs task');
+        console.log('Running templates task');
         browserSync.reload();
-    }); // reload when ejs changes
+    });
 });
 
 /**
@@ -189,6 +189,8 @@ gulp.task('watch-js', function () {
     ];
     // only run build of project files
     var watcher = gulp.watch(files, ['js-app'], function (done) {
+        // TODO I THINK THIS IS WRONG
+
         browserSync.reload();
         done();
     });
@@ -209,6 +211,7 @@ gulp.task('watch-sass', function () {
     ];
     // only run build of project files
     var watcher = gulp.watch(filesToWatch, ['styles-app'], function (done) {
+        // TODO I THINK THIS IS WRONG
         browserSync.reload();
         done();
     });
